@@ -140,13 +140,25 @@ def calc_target_index(state, cx, cy):
 def main():
     """Plot an example of Stanley steering control on a cubic spline."""
     #  target course
-    ax = [0.0, 100.0, 100.0, 50.0, 60.0]
-    ay = [0.0, 0.0, -30.0, -20.0, 0.0]
+    # ax = [0.0, 100.0, 100.0, 50.0, 60.0]
+    # ay = [0.0, 0.0, -30.0, -20.0, 0.0]
+
+    ax, ay = [], []
+    with open('C:\\Users\\user\\Desktop\\foscar\\study\\PythonRobotics\\PathTracking\\stanley_controller\\path.txt', 'r') as f:
+        sx, sy = -1, -1
+        while True:
+            line = f.readline().strip().split()
+            if not line: break
+
+            x, y, _ = map(float, line)
+            if sx == -1 and sy == -1: sx, sy = x, y
+            ax.append(x - sx)
+            ay.append(y - sy)
 
     cx, cy, cyaw, ck, s = cubic_spline_planner.calc_spline_course(
         ax, ay, ds=0.1)
 
-    target_speed = 30.0 / 3.6  # [m/s]
+    target_speed = 20.0 / 3.6  # [m/s]
 
     max_simulation_time = 100.0
 
